@@ -76,8 +76,7 @@ def export_with_intervals(tmpdir):
 
 
 def test_parser_with_default_settings(plain_export):
-    parser = TimeWarriorParser()
-    parser.parse(plain_export.open('r'))
+    parser = TimeWarriorParser(plain_export.open('r'))
 
     config = parser.get_config()
 
@@ -87,8 +86,7 @@ def test_parser_with_default_settings(plain_export):
 
 
 def test_parser_should_detect_verbose_setting(export_with_verbose):
-    parser = TimeWarriorParser()
-    parser.parse(export_with_verbose.open('r'))
+    parser = TimeWarriorParser(export_with_verbose.open('r'))
 
     config = parser.get_config()
 
@@ -96,8 +94,7 @@ def test_parser_should_detect_verbose_setting(export_with_verbose):
 
 
 def test_parser_should_detect_debug_setting(export_with_debug):
-    parser = TimeWarriorParser()
-    parser.parse(export_with_debug.open('r'))
+    parser = TimeWarriorParser(export_with_debug.open('r'))
 
     config = parser.get_config()
 
@@ -105,8 +102,7 @@ def test_parser_should_detect_debug_setting(export_with_debug):
 
 
 def test_parser_should_detect_confirmation_setting(export_with_confirmation):
-    parser = TimeWarriorParser()
-    parser.parse(export_with_confirmation.open('r'))
+    parser = TimeWarriorParser(export_with_confirmation.open('r'))
 
     config = parser.get_config()
 
@@ -114,8 +110,7 @@ def test_parser_should_detect_confirmation_setting(export_with_confirmation):
 
 
 def test_parser_should_parse_intervals(export_with_intervals):
-    parser = TimeWarriorParser()
-    parser.parse(export_with_intervals.open('r'))
+    parser = TimeWarriorParser(export_with_intervals.open('r'))
 
     intervals = parser.get_intervals()
     expected = [
