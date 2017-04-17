@@ -27,4 +27,4 @@ class TimeWarriorConfig(object):
     def get_boolean(self, key, default):
         value = self.get_value(key, default)
 
-        return True if re.search('{}'.format(value), "(on|1|yes|y|true)") else False
+        return True if re.search('^(on|1|yes|y|true)$', '{}'.format(value)) else False
