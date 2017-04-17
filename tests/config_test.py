@@ -26,7 +26,12 @@ def test_get_boolean_should_return_true_on_trueish_values(trueish_value):
     assert config.get_boolean('KEY', False) is True
 
 
-def test_get_boolean_should_return_false_on_falseish_values():
-    config = TimeWarriorConfig({'KEY': 'foo'})
+@pytest.fixture(scope='function', params=['off', 0, 'no', 'n', 'false'])
+def falseish_value(request):
+    return request.param
+
+
+def test_get_boolean_should_return_false_on_falseish_values(falseish_value):
+    config = TimeWarriorConfig({'KEY': falseish_value})
 
     assert config.get_boolean('KEY', True) is False
