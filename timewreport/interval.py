@@ -27,6 +27,12 @@ class TimeWarriorInterval(object):
     def is_open(self):
         return self.__end is None
 
+    def get_duration(self):
+        if self.is_open():
+            return datetime.now(tz=tz.tzlocal()) - self.__start
+        else:
+            return self.__end - self.__start
+
     def get_date(self):
         return datetime(self.__start.year, self.__start.month, self.__start.day)
 
