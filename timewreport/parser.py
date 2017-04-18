@@ -33,7 +33,11 @@ class TimeWarriorParser(object):
         intervals = []
 
         for interval in json.loads(json_string):
-            intervals.append(TimeWarriorInterval(interval['start'], interval['end'], interval['tags']))
+            intervals.append(TimeWarriorInterval(
+                interval['start'],
+                interval['end'] if 'end' in interval else None,
+                interval['tags']
+            ))
 
         return intervals
 

@@ -75,6 +75,18 @@ def export_with_intervals(tmpdir):
     return fn
 
 
+@pytest.fixture(scope='function')
+def export_with_open_interval(tmpdir):
+    fn = tmpdir.mkdir('data').join('export_with_open_interval')
+    fn.write("""\
+
+[
+{"start":"20160405T160000Z","tags":["This is a multi-word tag","ProjectA","tag123"]}
+]
+""")
+    return fn
+
+
 def test_parser_with_default_settings(plain_export):
     parser = TimeWarriorParser(plain_export.open('r'))
 
@@ -119,3 +131,14 @@ def test_parser_should_parse_intervals(export_with_intervals):
         TimeWarriorInterval('20160405T162000Z', '20160405T163000Z', ['This is a multi-word tag', 'ProjectA', 'tag123']),
     ]
     assert (intervals == expected)
+
+
+def test_parser_should_parse_open_interval(export_with_open_interval):
+    parser = TimeWarriorParser(export_with_open_interval.open('r'))
+
+    intervals = parser.get_intervals()
+    expected = [
+        TimeWarriorInterval('20160405T160000Z', None, ['This is a multi-word tag', 'ProjectA', 'tag123']),
+    ]
+    assert (intervals == expected)
+
