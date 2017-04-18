@@ -87,6 +87,18 @@ def export_with_open_interval(tmpdir):
     return fn
 
 
+@pytest.fixture(scope='function')
+def export_with_interval_without_tags(tmpdir):
+    fn = tmpdir.mkdir('data').join('export_with_interval_without_tags')
+    fn.write("""\
+
+[
+{"start":"20160405T160000Z","end":"20160405T161000Z"}
+]
+""")
+    return fn
+
+
 def test_parser_with_default_settings(plain_export):
     parser = TimeWarriorParser(plain_export.open('r'))
 
@@ -142,3 +154,12 @@ def test_parser_should_parse_open_interval(export_with_open_interval):
     ]
     assert (intervals == expected)
 
+
+def test_parser_should_parse_interval_without_tags(export_with_interval_without_tags):
+    parser = TimeWarriorParser(export_with_interval_without_tags.open('r'))
+
+    intervals = parser.get_intervals()
+    expected = [
+        TimeWarriorInterval('20160405T160000Z', '20160405T161000Z', []),
+    ]
+    assert (intervals == expected)
