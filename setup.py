@@ -4,6 +4,8 @@ config = {
     'name': 'timew-report',
     'version': '0.0.0',
     'description': 'An interface for TimeWarrior report data',
+    'long_description': '\n' + open('README.md').read(),
+    'url': 'https://github.com/lauft/timew-report.git',
     'author': 'Thomas Lauf',
     'author_email': 'Thomas.Lauf@tngtech.com',
     'license': 'MIT License',
