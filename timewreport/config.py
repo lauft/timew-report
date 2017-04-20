@@ -28,3 +28,12 @@ class TimeWarriorConfig(object):
         value = self.get_value(key, default)
 
         return True if re.search('^(on|1|yes|y|true)$', '{}'.format(value)) else False
+
+    def get_debug(self):
+        return self.get_boolean('debug', False)
+
+    def get_verbose(self):
+        return self.get_boolean('verbose', False)
+
+    def get_confirmation(self):
+        return self.get_boolean('confirmation', False)
