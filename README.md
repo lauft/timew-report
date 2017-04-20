@@ -14,7 +14,7 @@ Create an executable python script and place it in your `TimeWarrior` extension 
   
     timew [report] <extension_name>
 
-See [TimeWarrior documentation]() for more details about this.
+See [TimeWarrior documentation](https://taskwarrior.org/docs/timewarrior/api.html) for more details about this.
 
 ## Details
 
