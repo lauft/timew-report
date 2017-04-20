@@ -1,4 +1,4 @@
 .cache/
 venv/
 tests/__pycache__/
-timewarrior/__pycache__/
+timewreport/__pycache__/
