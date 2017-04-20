@@ -4,6 +4,10 @@ An interface for [TimeWarrior](https://taskwarrior.org/docs/timewarrior/) report
 
 ## Installation
 
+Use `pip` to install the package:
+
+    pip install timew-report
+
 ## Usage
 
 Create an executable python script and place it in your `TimeWarrior` extension folder. `TimeWarrior` will send its data to the script when called with the extension's name:
@@ -31,8 +35,6 @@ Retrieve configuration (as `TimeWarriorConfig` object) and intervals (array of `
 
     tw_config = parser.get_config()
     tw_intervals = parser.get_intervals()
-
-
 
 ### Class `TimeWarriorConfig`
 
