@@ -2,7 +2,7 @@ from setuptools import setup
 
 config = {
     'name': 'timew-report',
-    'version': '0.0.0',
+    'version': '1.0.0',
     'description': 'An interface for TimeWarrior report data',
     'long_description': '\n' + open('README.md').read(),
     'url': 'https://github.com/lauft/timew-report.git',
@@ -10,7 +10,7 @@ config = {
     'author_email': 'Thomas.Lauf@tngtech.com',
     'license': 'MIT License',
     'classifiers': [
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Topic :: Utilities',
         'License :: OSI Approved :: MIT License',
