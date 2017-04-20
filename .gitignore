@@ -2,3 +2,4 @@
 venv/
 tests/__pycache__/
 timewreport/__pycache__/
+*.pyc
