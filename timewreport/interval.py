@@ -24,6 +24,9 @@ class TimeWarriorInterval(object):
     def get_tags(self):
         return self.__tags
 
+    def is_open(self):
+        return False
+
     def get_date(self):
         return datetime(self.__start.year, self.__start.month, self.__start.day)
 
