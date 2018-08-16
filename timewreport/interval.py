@@ -15,6 +15,9 @@ class TimeWarriorInterval(object):
             and self.__end == other.get_end() \
             and self.__tags == other.get_tags()
 
+    def __hash__(self):
+        return hash(repr(self))
+
     def get_start(self):
         return self.__start
 
