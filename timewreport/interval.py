@@ -1,6 +1,6 @@
 import dateutil.parser
 
-from datetime import datetime
+from datetime import datetime, date
 from dateutil.tz import tz
 
 
@@ -34,7 +34,7 @@ class TimeWarriorInterval(object):
             return self.__end - self.__start
 
     def get_date(self):
-        return datetime(self.__start.year, self.__start.month, self.__start.day)
+        return date(self.__start.year, self.__start.month, self.__start.day)
 
     def __get_local_datetime(self, datetime_string):
         from_zone = tz.tzutc()
