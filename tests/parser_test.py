@@ -69,7 +69,7 @@ def export_with_intervals(tmpdir):
 [
 {"start":"20160405T160000Z","end":"20160405T161000Z","tags":["This is a multi-word tag","ProjectA","tag123"]},
 {"start":"20160405T161000Z","end":"20160405T162000Z","tags":["This is a multi-word tag","ProjectA","tag123"]},
-{"start":"20160405T162000Z","end":"20160405T163000Z","tags":["This is a multi-word tag","ProjectA","tag123"]}
+{"start":"20160405T162000Z","end":"20160405T163000Z","tags":["This is a multi-word tag","ProjectA","tag123"],"annotation":"annotated"}
 ]
 """)
     return fn
@@ -138,9 +138,18 @@ def test_parser_should_parse_intervals(export_with_intervals):
 
     intervals = parser.get_intervals()
     expected = [
-        TimeWarriorInterval('20160405T160000Z', '20160405T161000Z', ['This is a multi-word tag', 'ProjectA', 'tag123']),
-        TimeWarriorInterval('20160405T161000Z', '20160405T162000Z', ['This is a multi-word tag', 'ProjectA', 'tag123']),
-        TimeWarriorInterval('20160405T162000Z', '20160405T163000Z', ['This is a multi-word tag', 'ProjectA', 'tag123']),
+        TimeWarriorInterval('20160405T160000Z',
+                            '20160405T161000Z',
+                            ['This is a multi-word tag', 'ProjectA', 'tag123'],
+                            None),
+        TimeWarriorInterval('20160405T161000Z',
+                            '20160405T162000Z',
+                            ['This is a multi-word tag', 'ProjectA', 'tag123'],
+                            None),
+        TimeWarriorInterval('20160405T162000Z',
+                            '20160405T163000Z',
+                            ['This is a multi-word tag', 'ProjectA', 'tag123'],
+                            "annotated"),
     ]
     assert (intervals == expected)
 
@@ -150,7 +159,7 @@ def test_parser_should_parse_open_interval(export_with_open_interval):
 
     intervals = parser.get_intervals()
     expected = [
-        TimeWarriorInterval('20160405T160000Z', None, ['This is a multi-word tag', 'ProjectA', 'tag123']),
+        TimeWarriorInterval('20160405T160000Z', None, ['This is a multi-word tag', 'ProjectA', 'tag123'], None),
     ]
     assert (intervals == expected)
 
@@ -160,6 +169,6 @@ def test_parser_should_parse_interval_without_tags(export_with_interval_without_
 
     intervals = parser.get_intervals()
     expected = [
-        TimeWarriorInterval('20160405T160000Z', '20160405T161000Z', []),
+        TimeWarriorInterval('20160405T160000Z', '20160405T161000Z', [], None),
     ]
     assert (intervals == expected)

@@ -36,7 +36,8 @@ class TimeWarriorParser(object):
             intervals.append(TimeWarriorInterval(
                 interval['start'],
                 interval['end'] if 'end' in interval else None,
-                interval['tags'] if 'tags' in interval else []
+                interval['tags'] if 'tags' in interval else [],
+                interval['annotation'] if 'annotation' in interval else None
             ))
 
         return intervals
