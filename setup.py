@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 config = {
     'name': 'timew-report',
-    'version': '1.0.0',
+    'version': '1.3.0',
     'description': 'An interface for TimeWarrior report data',
     'long_description': long_description,
     'long_description_content_type': 'text/markdown',
