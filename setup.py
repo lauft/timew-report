@@ -14,10 +14,11 @@ config = {
     'author_email': 'Thomas.Lauf@tngtech.com',
     'license': 'MIT License',
     'classifiers': [
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Topic :: Utilities',
         'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
         'Programming Language :: Python :: 3.4',
     ],
     'keywords': 'timewarrior taskwarrior time-tracking',
