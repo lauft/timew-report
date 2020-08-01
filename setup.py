@@ -1,10 +1,14 @@
 from setuptools import setup
 
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
 config = {
     'name': 'timew-report',
     'version': '1.0.0',
     'description': 'An interface for TimeWarrior report data',
-    'long_description': '\n' + open('README.md').read(),
+    'long_description': long_description,
+    'long_description_content_type': 'text/markdown',
     'url': 'https://github.com/lauft/timew-report.git',
     'author': 'Thomas Lauf',
     'author_email': 'Thomas.Lauf@tngtech.com',

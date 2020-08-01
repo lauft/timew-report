@@ -10,8 +10,9 @@ Use `pip` to install the package:
 
 ## Usage
 
-Create an executable python script and place it in your `TimeWarrior` extension folder. `TimeWarrior` will send its data to the script when called with the extension's name:
-  
+Create an executable python script and place it in your `TimeWarrior` extension folder.
+`TimeWarrior` will send its data to the script when called with the extension's name:
+
     timew [report] <extension_name>
 
 See [TimeWarrior documentation](https://taskwarrior.org/docs/timewarrior/api.html) for more details about this.
@@ -23,7 +24,8 @@ This package consists of three classes which  aid processing the `TimeWarrior` d
 * `TimeWarriorConfig`
 * `TimeWarriorInterval`
 
-The classes are explained in detail below. You find some usage examples at the bottom of this README.
+The classes are explained in detail below.
+You find some usage examples at the bottom of this README.
 
 ### Class `TimeWarriorParser`
 
@@ -59,14 +61,17 @@ The `TimeWarriorInterval` encapsulates the time interval data and provides an in
     start = tw_interval.get_start()
     end = tw_interval.get_end()
     tags = tw_interval.get_tags()
+    annotation = tw_interval.get_annotation()
     
-`start` and `end` are `datetime` objects and given in local time, `tags` is a list of zero or more strings.
+`start` and `end` are `datetime` objects and given in local time (`end` is equal to `None` if the interval is open).
+`tags` is a list of zero or more strings, `annotation` is a single string or `None`
 
 An interval can be queried whether it is open:
 
     is_open = tw_interval.is_open()
 
-There is a method which returns the interval's date (day, month, year). It is retrieved from its `start` datetime:
+There is a method which returns the interval's date (day, month, year).
+It is retrieved from its `start` datetime:
 
     start_date = tw_interval.get_date()
 
