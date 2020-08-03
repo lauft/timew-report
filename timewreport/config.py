@@ -29,6 +29,11 @@ class TimeWarriorConfig(object):
 
         return True if re.search('^(on|1|yes|y|true)$', '{}'.format(value)) else False
 
+    def get_int(self, key, default):
+        value = self.get_value(key, default)
+
+        return int(value) if value is not None else None
+
     def get_debug(self):
         return self.get_boolean('debug', False)
 
