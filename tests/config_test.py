@@ -35,3 +35,9 @@ def test_get_boolean_should_return_false_on_falseish_values(falseish_value):
     config = TimeWarriorConfig({'KEY': falseish_value})
 
     assert config.get_boolean('KEY', True) is False
+
+
+def test_get_boolean_should_return_default_if_key_not_available():
+    config = TimeWarriorConfig({})
+
+    assert config.get_boolean('FOO', True) is True
