@@ -50,7 +50,7 @@ There is a specialized getter for boolean values which returns `True` for the gi
 
 There is a specialized getter for integer values:
 
-    int_val = tw_confit.get_int(key, default)
+    int_val = tw_config.get_int(key, default)
     
 In case of a non-parsable string, this function raises a `ValueError` exception.
 
