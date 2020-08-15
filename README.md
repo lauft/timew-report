@@ -70,7 +70,7 @@ The `TimeWarriorInterval` encapsulates the time interval data and provides an in
     annotation = tw_interval.get_annotation()
     
 `start` and `end` are `datetime` objects and given in local time (`end` is equal to `None` if the interval is open).
-`tags` is a list of zero or more strings, `annotation` is a single string or `None`
+`tags` is a list of zero or more strings, `annotation` is a single string or `None`.
 
 An interval can be queried whether it is open:
 
