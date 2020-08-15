@@ -48,6 +48,12 @@ There is a specialized getter for boolean values which returns `True` for the gi
 
     bool = tw_config.get_boolean(key, default)
 
+There is a specialized getter for integer values:
+
+    int_val = tw_confit.get_int(key, default)
+    
+In case of a non-parsable string, this function raises a `ValueError` exception.
+
 There are specialized getters for the `debug`, `verbose`, and `confirmation` flag:
 
     debug = tw_config.get_debug()
