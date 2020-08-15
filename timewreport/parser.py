@@ -18,8 +18,8 @@ class TimeWarriorParser(object):
             if line == u'\x0A':
                 break
 
-            m = re.search('^([^:]+): (.*)$', line, re.MULTILINE)
-            config[m.group(1)] = m.group(2)
+            m = re.search('^([^:]+):( (.*))?$', line, re.MULTILINE)
+            config[m.group(1)] = m.group(3) if m.group(2) is not None else ""
 
         return TimeWarriorConfig(config)
 

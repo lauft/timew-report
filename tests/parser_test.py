@@ -18,6 +18,19 @@ name3: value3
     return fn
 
 
+@pytest.fixture(scope='function')
+def plain_export_with_empty_entries(tmpdir):
+    fn = tmpdir.mkdir('data').join('plain_export')
+    fn.write("""\
+name1: value1
+name2: 
+name3:
+
+[]
+""")
+    return fn
+
+
 @pytest.fixture(scope='function', params=['on', 1, 'yes', 'y', 'true'])
 def export_with_verbose(tmpdir, request):
     fn = tmpdir.mkdir('data').join('export_with_verbose')
@@ -107,6 +120,16 @@ def test_parser_with_default_settings(plain_export):
     assert (config.get_boolean('verbose', True) is False)
     assert (config.get_boolean('debug', True) is False)
     assert (config.get_boolean('confirmation', True) is False)
+
+
+def test_parser_with_empty_settings(plain_export_with_empty_entries):
+    parser = TimeWarriorParser(plain_export_with_empty_entries.open('r'))
+
+    config = parser.get_config()
+
+    assert (config.get_value('name1', "default-name1") is not "default-name1")
+    assert (config.get_value('name2', "default-name2") is not "default-name2")
+    assert (config.get_value('name3', "default-name3") is not "default-name3")
 
 
 def test_parser_should_detect_verbose_setting(export_with_verbose):
