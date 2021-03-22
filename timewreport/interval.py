@@ -44,11 +44,12 @@ class TimeWarriorInterval(object):
     def get_date(self):
         return date(self.__start.year, self.__start.month, self.__start.day)
 
-    def __get_local_datetime(self, datetime_string):
+    @staticmethod
+    def __get_local_datetime(datetime_input):
         from_zone = tz.tzutc()
         to_zone = tz.tzlocal()
 
-        date = dateutil.parser.parse(datetime_string)
-        date.replace(tzinfo=from_zone)
+        local_datetime = dateutil.parser.parse(datetime_input)
+        local_datetime.replace(tzinfo=from_zone)
 
-        return date.astimezone(to_zone)
+        return local_datetime.astimezone(to_zone)
