@@ -1,11 +1,13 @@
 from setuptools import setup
 
+import timewreport
+
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 config = {
     'name': 'timew-report',
-    'version': '1.3.1',
+    'version': timewreport.__version__,
     'description': 'An interface for TimeWarrior report data',
     'long_description': long_description,
     'long_description_content_type': 'text/markdown',
