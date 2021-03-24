@@ -25,7 +25,7 @@ config = {
     ],
     'keywords': 'timewarrior taskwarrior time-tracking',
     'packages': ['timewreport'],
-    'install_requires': ['python-dateutil'],
+    'install_requires': ['python-dateutil', 'deprecation'],
 }
 
 setup(**config)

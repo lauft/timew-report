@@ -1,7 +1,10 @@
 import dateutil.parser
+import deprecation
 
 from datetime import datetime, date
 from dateutil.tz import tz
+
+import timewreport
 
 
 class TimeWarriorInterval(object):
@@ -41,8 +44,20 @@ class TimeWarriorInterval(object):
         else:
             return self.__end - self.__start
 
+    @deprecation.deprecated(deprecated_in="1.4.0", removed_in="2.0.0",
+                            current_version=timewreport.__version__,
+                            details="Use the get_start_date function instead")
     def get_date(self):
         return date(self.__start.year, self.__start.month, self.__start.day)
+
+    def get_start_date(self):
+        return date(self.__start.year, self.__start.month, self.__start.day)
+
+    def get_end_date(self):
+        if self.is_open():
+            return date.today()
+
+        return date(self.__end.year, self.__end.month, self.__end.day)
 
     @staticmethod
     def __get_local_datetime(datetime_input):

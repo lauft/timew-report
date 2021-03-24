@@ -76,10 +76,12 @@ An interval can be queried whether it is open:
 
     is_open = tw_interval.is_open()
 
-There is a method which returns the interval's date (day, month, year).
-It is retrieved from its `start` datetime:
+There are methods which return the interval's start or end date (day, month, year) respectively.
 
-    start_date = tw_interval.get_date()
+    start_date = tw_interval.get_start_date()
+    end_date = tw_interval.get_end_date()
+
+**Note:** The function `TimeWarriorInterval.get_date()` has been deprecated in favour of `TimeWarriorInterval.get_start_date()`.
 
 ## Examples
 

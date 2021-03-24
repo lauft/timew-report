@@ -24,7 +24,10 @@ def test_interval_should_be_creatable_from_utc_string():
         [],
         None)
 
-    assert interval.get_start() == test_start and interval.get_end() == test_end
+    assert interval.get_start() == test_start \
+           and interval.get_end() == test_end \
+           and interval.get_start_date() == test_start.date() \
+           and interval.get_end_date() == test_end.date()
 
 
 def test_interval_should_be_creatable_from_local_string():
@@ -37,7 +40,10 @@ def test_interval_should_be_creatable_from_local_string():
         [],
         None)
 
-    assert interval.get_start() == test_start and interval.get_end() == test_end
+    assert interval.get_start() == test_start \
+           and interval.get_end() == test_end \
+           and interval.get_start_date() == test_start.date() \
+           and interval.get_end_date() == test_end.date()
 
 
 def test_interval_should_be_creatable_from_local_datetime():
@@ -50,7 +56,10 @@ def test_interval_should_be_creatable_from_local_datetime():
         [],
         None)
 
-    assert interval.get_start() == test_start and interval.get_end() == test_end
+    assert interval.get_start() == test_start \
+           and interval.get_end() == test_end \
+           and interval.get_start_date() == test_start.date() \
+           and interval.get_end_date() == test_end.date()
 
 
 def test_interval_should_be_creatable_from_utc_datetime():
@@ -65,4 +74,7 @@ def test_interval_should_be_creatable_from_utc_datetime():
         [],
         None)
 
-    assert interval.get_start() == test_start and interval.get_end() == test_end
+    assert interval.get_start() == test_start \
+           and interval.get_end() == test_end \
+           and interval.get_start_date() == test_start.date() \
+           and interval.get_end_date() == test_end.date()
