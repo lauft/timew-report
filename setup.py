@@ -1,13 +1,13 @@
-from setuptools import setup
+from setuptools import setup, find_packages
+import pathlib
 
-import timewreport
+parent_dir = pathlib.Path(__file__).parent.resolve()
 
-with open("README.md", "r") as fh:
+with open(parent_dir / 'README.md', 'r') as fh:
     long_description = fh.read()
 
 config = {
     'name': 'timew-report',
-    'version': timewreport.__version__,
     'description': 'An interface for Timewarrior report data',
     'long_description': long_description,
     'long_description_content_type': 'text/markdown',
@@ -21,11 +21,25 @@ config = {
         'Topic :: Utilities',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3 :: Only',
     ],
     'keywords': 'timewarrior taskwarrior time-tracking',
-    'packages': ['timewreport'],
+    'project_urls': {
+        'Bug Reports': 'https://github.com/lauft/timew-report/issues',
+        'Source': 'https://github.com/lauft/timew-report',
+    },
+    'package_dir': {'': 'src'},
+    'packages': find_packages(where='src'),
+    'include_package_data': True,
+    'python_requires': '>3, <4',
     'install_requires': ['python-dateutil', 'deprecation'],
+    'extras_require': {
+        'test': ['pytest']
+    }
 }
 
 setup(**config)
