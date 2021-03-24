@@ -46,10 +46,15 @@ class TimeWarriorInterval(object):
 
     @staticmethod
     def __get_local_datetime(datetime_input):
-        from_zone = tz.tzutc()
-        to_zone = tz.tzlocal()
+        if type(datetime_input) is str:
+            local_datetime = dateutil.parser.parse(datetime_input)
+        elif type(datetime_input) is datetime:
+            if datetime_input.tzinfo is None:
+                local_datetime = datetime_input.replace(tzinfo=tz.tzutc())
+            else:
+                local_datetime = datetime_input
 
-        local_datetime = dateutil.parser.parse(datetime_input)
-        local_datetime.replace(tzinfo=from_zone)
+        else:
+            raise TypeError("Unknown type for datetime input: {}".format(type(datetime_input)))
 
-        return local_datetime.astimezone(to_zone)
+        return local_datetime.astimezone(tz.tzlocal())

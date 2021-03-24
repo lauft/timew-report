@@ -38,3 +38,31 @@ def test_interval_should_be_creatable_from_local_string():
         None)
 
     assert interval.get_start() == test_start and interval.get_end() == test_end
+
+
+def test_interval_should_be_creatable_from_local_datetime():
+    test_start = datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
+    test_end = test_start + timedelta(hours=1)
+
+    interval = TimeWarriorInterval(
+        test_start,
+        test_end,
+        [],
+        None)
+
+    assert interval.get_start() == test_start and interval.get_end() == test_end
+
+
+def test_interval_should_be_creatable_from_utc_datetime():
+    test_start = datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
+    test_start_utc = test_start.utcnow().replace(microsecond=0)
+    test_end = test_start + timedelta(hours=1)
+    test_end_utc = test_start_utc + timedelta(hours=1)
+
+    interval = TimeWarriorInterval(
+        test_start_utc,
+        test_end_utc,
+        [],
+        None)
+
+    assert interval.get_start() == test_start and interval.get_end() == test_end
