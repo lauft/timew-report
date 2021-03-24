@@ -1,6 +1,6 @@
 # timew-report
 
-An interface for [Timewarrior](https://taskwarrior.org/docs/timewarrior/) report data.
+An interface for [Timewarrior](https://timewarrior.net) report data.
 
 ## Installation
 
@@ -15,7 +15,7 @@ Create an executable python script and place it in your `Timewarrior` extension 
 
     timew [report] <extension_name>
 
-See [Timewarrior documentation](https://taskwarrior.org/docs/timewarrior/api.html) for more details about this.
+See [Timewarrior documentation](https://timewarrior.net/docs/api/) for more details about this.
 
 ## Details
 
