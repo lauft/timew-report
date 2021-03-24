@@ -8,7 +8,7 @@ with open("README.md", "r") as fh:
 config = {
     'name': 'timew-report',
     'version': timewreport.__version__,
-    'description': 'An interface for TimeWarrior report data',
+    'description': 'An interface for Timewarrior report data',
     'long_description': long_description,
     'long_description_content_type': 'text/markdown',
     'url': 'https://github.com/lauft/timew-report.git',

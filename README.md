@@ -1,6 +1,6 @@
 # timew-report
 
-An interface for [TimeWarrior](https://taskwarrior.org/docs/timewarrior/) report data.
+An interface for [Timewarrior](https://taskwarrior.org/docs/timewarrior/) report data.
 
 ## Installation
 
@@ -10,16 +10,16 @@ Use `pip` to install the package:
 
 ## Usage
 
-Create an executable python script and place it in your `TimeWarrior` extension folder.
-`TimeWarrior` will send its data to the script when called with the extension's name:
+Create an executable python script and place it in your `Timewarrior` extension folder.
+`Timewarrior` will send its data to the script when called with the extension's name:
 
     timew [report] <extension_name>
 
-See [TimeWarrior documentation](https://taskwarrior.org/docs/timewarrior/api.html) for more details about this.
+See [Timewarrior documentation](https://taskwarrior.org/docs/timewarrior/api.html) for more details about this.
 
 ## Details
 
-This package consists of three classes which  aid processing the `TimeWarrior` data:
+This package consists of three classes which aid processing the `Timewarrior` data:
 * `TimeWarriorParser`
 * `TimeWarriorConfig`
 * `TimeWarriorInterval`
@@ -29,7 +29,7 @@ You find some usage examples at the bottom of this README.
 
 ### Class `TimeWarriorParser`
 
-You can pass an input stream with TimeWarrior data to constructor of `TimeWarriorParser`:
+You can pass an input stream with Timewarrior data to constructor of `TimeWarriorParser`:
 
     parser = TimeWarriorParser(sys.stdin)
 
