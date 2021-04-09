@@ -116,9 +116,9 @@ def test_parser_with_default_settings(plain_export):
 
     config = parser.get_config()
 
-    assert (config.get_value('name1', "default-name1") is not "default-name1")
-    assert (config.get_value('name2', "default-name2") is not "default-name2")
-    assert (config.get_value('name3', "default-name3") is not "default-name3")
+    assert (config.get_value('name1', "default-name1") != "default-name1")
+    assert (config.get_value('name2', "default-name2") != "default-name2")
+    assert (config.get_value('name3', "default-name3") != "default-name3")
 
 
 def test_parser_with_empty_settings(plain_export_with_empty_entries):
@@ -126,9 +126,9 @@ def test_parser_with_empty_settings(plain_export_with_empty_entries):
 
     config = parser.get_config()
 
-    assert (config.get_value('name1', "default-name1") is not "default-name1")
-    assert (config.get_value('name2', "default-name2") is not "default-name2")
-    assert (config.get_value('name3', "default-name3") is not "default-name3")
+    assert (config.get_value('name1', "default-name1") != "default-name1")
+    assert (config.get_value('name2', "default-name2") != "default-name2")
+    assert (config.get_value('name3', "default-name3") != "default-name3")
 
 
 def test_parser_should_detect_verbose_setting(export_with_verbose):

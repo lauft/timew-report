@@ -59,4 +59,4 @@ def test_get_int_should_return_raise_exception_for_invalid_strings():
 def test_get_int_should_return_default_if_key_not_available():
     config = TimeWarriorConfig({'BAR': '1'})
 
-    assert config.get_int('FOO', 2) is 2
+    assert config.get_int('FOO', 2) == 2
