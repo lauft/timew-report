@@ -87,6 +87,7 @@ There are methods which return the interval's start or end date (day, month, yea
 
 A simple CSV report:
 
+    #!/usr/bin/env python3
     import sys
     from timewreport.parser import TimeWarriorParser
     
@@ -103,6 +104,7 @@ A simple CSV report:
 
 Summing up totals by tag:
 
+    #!/usr/bin/env python3
     import sys
     from timewreport.parser import TimeWarriorParser
     
