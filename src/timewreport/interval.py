@@ -8,20 +8,25 @@ import timewreport
 
 
 class TimeWarriorInterval(object):
-    def __init__(self, start, end, tags, annotation):
+    def __init__(self, id, start, end, tags, annotation):
+        self.__id = id
         self.__start = self.__get_local_datetime(start)
         self.__end = self.__get_local_datetime(end) if end is not None else None
         self.__tags = tags
         self.__annotation = annotation
 
     def __eq__(self, other):
-        return self.__start == other.get_start() \
+        return self.__id == other.get_id() \
+            and self.__start == other.get_start() \
             and self.__end == other.get_end() \
             and self.__tags == other.get_tags() \
             and self.__annotation == other.get_annotation()
 
     def __hash__(self):
         return hash(repr(self))
+
+    def get_id(self):
+        return self.__id
 
     def get_start(self):
         return self.__start
