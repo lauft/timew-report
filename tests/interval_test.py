@@ -6,8 +6,8 @@ from timewreport.interval import TimeWarriorInterval
 
 
 def test_interval_should_be_hashable():
-    a = TimeWarriorInterval("20180816T100209Z", "20180816T110209Z", [], None)
-    b = TimeWarriorInterval("20180816T090319Z", "20180816T100700Z", [], None)
+    a = TimeWarriorInterval(1, "20180816T100209Z", "20180816T110209Z", [], None)
+    b = TimeWarriorInterval(2, "20180816T090319Z", "20180816T100700Z", [], None)
 
     assert {a, b}
 
@@ -19,6 +19,7 @@ def test_interval_should_be_creatable_from_utc_string():
     test_end_utc = test_start_utc + timedelta(hours=1)
 
     interval = TimeWarriorInterval(
+        1,
         "{:%Y%m%dT%H%M%S}Z".format(test_start_utc),
         "{:%Y%m%dT%H%M%S}Z".format(test_end_utc),
         [],
@@ -35,6 +36,7 @@ def test_interval_should_be_creatable_from_local_string():
     test_end = test_start + timedelta(hours=1)
 
     interval = TimeWarriorInterval(
+        1,
         "{:%Y%m%dT%H%M%S}".format(test_start),
         "{:%Y%m%dT%H%M%S}".format(test_end),
         [],
@@ -51,6 +53,7 @@ def test_interval_should_be_creatable_from_local_datetime():
     test_end = test_start + timedelta(hours=1)
 
     interval = TimeWarriorInterval(
+        1,
         test_start,
         test_end,
         [],
@@ -69,6 +72,7 @@ def test_interval_should_be_creatable_from_utc_datetime():
     test_end_utc = test_start_utc + timedelta(hours=1)
 
     interval = TimeWarriorInterval(
+        1,
         test_start_utc,
         test_end_utc,
         [],
