@@ -1,5 +1,11 @@
 .cache/
+.coverage.*
+.tox/
 venv/
+.venv/
+dist/
+build/
 tests/__pycache__/
 timewreport/__pycache__/
 *.pyc
+*.egg-info/
