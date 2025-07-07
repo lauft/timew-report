@@ -1,8 +1,11 @@
-from datetime import datetime, timedelta
+import datetime
+#from datetime import datetime, timedelta
 
 from dateutil.tz import tz
 
 from timewreport.interval import TimeWarriorInterval
+
+UTC = datetime.UTC if hasattr(datetime, 'UTC') else datetime.timezone.utc
 
 
 def test_interval_should_be_hashable():
@@ -13,10 +16,10 @@ def test_interval_should_be_hashable():
 
 
 def test_interval_should_be_creatable_from_utc_string():
-    test_start = datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
-    test_start_utc = test_start.utcnow()
-    test_end = test_start + timedelta(hours=1)
-    test_end_utc = test_start_utc + timedelta(hours=1)
+    test_start = datetime.datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
+    test_start_utc = test_start.now(UTC)
+    test_end = test_start + datetime.timedelta(hours=1)
+    test_end_utc = test_start_utc + datetime.timedelta(hours=1)
 
     interval = TimeWarriorInterval(
         1,
@@ -32,8 +35,8 @@ def test_interval_should_be_creatable_from_utc_string():
 
 
 def test_interval_should_be_creatable_from_local_string():
-    test_start = datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
-    test_end = test_start + timedelta(hours=1)
+    test_start = datetime.datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
+    test_end = test_start + datetime.timedelta(hours=1)
 
     interval = TimeWarriorInterval(
         1,
@@ -49,8 +52,8 @@ def test_interval_should_be_creatable_from_local_string():
 
 
 def test_interval_should_be_creatable_from_local_datetime():
-    test_start = datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
-    test_end = test_start + timedelta(hours=1)
+    test_start = datetime.datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
+    test_end = test_start + datetime.timedelta(hours=1)
 
     interval = TimeWarriorInterval(
         1,
@@ -66,10 +69,10 @@ def test_interval_should_be_creatable_from_local_datetime():
 
 
 def test_interval_should_be_creatable_from_utc_datetime():
-    test_start = datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
-    test_start_utc = test_start.utcnow().replace(microsecond=0)
-    test_end = test_start + timedelta(hours=1)
-    test_end_utc = test_start_utc + timedelta(hours=1)
+    test_start = datetime.datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
+    test_start_utc = test_start.now(UTC).replace(microsecond=0)
+    test_end = test_start + datetime.timedelta(hours=1)
+    test_end_utc = test_start_utc + datetime.timedelta(hours=1)
 
     interval = TimeWarriorInterval(
         1,
