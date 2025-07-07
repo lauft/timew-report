@@ -1,10 +1,10 @@
-import dateutil.parser
-import deprecation
-
 from datetime import datetime, date
 from importlib.metadata import version
 
+import dateutil.parser
+
 from dateutil.tz import tz
+from deprecated import deprecated
 
 VERSION = version('timew_report').split("+")[0]
 
@@ -51,9 +51,7 @@ class TimeWarriorInterval(object):
         else:
             return self.__end - self.__start
 
-    @deprecation.deprecated(deprecated_in="1.4.0", removed_in="2.0.0",
-                            current_version=VERSION,
-                            details="Use the get_start_date function instead")
+    @deprecated(version='1.4.0', reason="Disallowed in v2.0.0, use ``get_start_date`` instead")
     def get_date(self):
         return date(self.__start.year, self.__start.month, self.__start.day)
 

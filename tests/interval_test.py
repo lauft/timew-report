@@ -1,11 +1,27 @@
 import datetime
-#from datetime import datetime, timedelta
+
+import pytest
 
 from dateutil.tz import tz
 
 from timewreport.interval import TimeWarriorInterval
 
 UTC = datetime.UTC if hasattr(datetime, 'UTC') else datetime.timezone.utc
+
+
+def test_get_date_is_deprecated():
+    test_interval = TimeWarriorInterval(2, "20180816T090319Z", "20180816T100700Z", [], None)
+    with pytest.deprecated_call():
+        interval_start = test_interval.get_date()
+
+
+def test_get_date_warning_has_version():
+    test_interval = TimeWarriorInterval(2, "20180816T090319Z", "20180816T100700Z", [], None)
+    with pytest.warns(DeprecationWarning) as record:
+        start_date = test_interval.get_date()
+        warn_msg = record[0].message.args[0]
+    print(warn_msg)
+    assert "Deprecated since version 1.4.0" in warn_msg
 
 
 def test_interval_should_be_hashable():
