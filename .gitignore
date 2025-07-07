@@ -9,3 +9,6 @@ tests/__pycache__/
 timewreport/__pycache__/
 *.pyc
 *.egg-info/
+/tmp
+/*.spec
+

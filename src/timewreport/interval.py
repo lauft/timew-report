@@ -10,8 +10,8 @@ VERSION = version('timew_report').split("+")[0]
 
 
 class TimeWarriorInterval(object):
-    def __init__(self, id, start, end, tags, annotation):
-        self.__id = id
+    def __init__(self, ID, start, end, tags, annotation):
+        self.__id = ID
         self.__start = self.__get_local_datetime(start)
         self.__end = self.__get_local_datetime(end) if end is not None else None
         self.__tags = tags

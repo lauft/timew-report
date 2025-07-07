@@ -1,0 +1,117 @@
+name: RPMs
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  get_version:
+    name: Get version info
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      version: ${{ steps.git_ver.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get package version
+        id: git_ver
+        run: |
+          version=$(make version)
+          echo "Version from git: ${version}"
+          echo "version=${version}" >> $GITHUB_OUTPUT
+
+  dev_rpms:
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [centos9, rocky9]
+        include:
+          - name: centos9
+            image: quay.io/centos/centos:stream9
+          - name: rocky9
+            image: quay.io/rockylinux/rockylinux:9
+
+    runs-on: ubuntu-latest
+    needs: [get_version]
+    container:
+      image: ${{ matrix.image }}
+
+    permissions:
+      contents: read
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONIOENCODING: utf-8
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    # Work-around for https://github.com/actions/runner-images/issues/6775
+    - name: Change Owner of Container Working Directory
+      if: matrix.image
+      run: chown root.root .
+
+    - name: Check version and update spec
+      env:
+        VERSION: ${{ needs.get_version.outputs.version }}
+      run: |
+        echo "Dev version from git: ${VERSION}"
+        sed -e s"|VER_GOES_HERE|${VERSION}|" packaging/el9/timew_report.spec > timew_report.spec
+
+    - name: Deps for rpm builds (centos/rocky)
+      run: |
+        dnf install -y dnf-utils epel-release 'dnf-command(config-manager)'
+        dnf config-manager --set-enabled crb
+        dnf search --refresh epel
+        dnf install -y sudo git make wget rpm-build rpm-devel rpmlint rpmdevtools python3-pip
+        dnf -y builddep --spec timew_report.spec
+
+    - name: Manually create pip cache dir
+      run: mkdir -p ~/.cache/pip
+
+    - uses: actions/cache@v4
+      id: cache
+      env:
+        cache-name: cache-pip
+      with:
+        path: ~/.cache
+        key: ${{ matrix.name }}-${{ env.cache-name }}-${{ hashFiles('pyproject.toml') }}
+        restore-keys: |
+          ${{ matrix.name }}-${{ env.cache-name }}-
+
+    - name: Generate the version file
+      run: |
+        python3 -m venv .venv
+        .venv/bin/pip3 install -U pip
+        .venv/bin/pip3 install -e .
+      env:
+        SETUPTOOLS_SCM_PRETEND_VERSION: ${{ needs.get_version.outputs.version }}
+
+    - name: Build bdist_rpm pkgs
+      run: |
+        make packages
+      env:
+        VERSION: ${{ needs.get_version.outputs.version }}
+
+    - name: Upload rpm files
+      uses: actions/upload-artifact@v4
+      with:
+        name: "timew-report-${{ needs.get_version.outputs.version }}.${{ matrix.name }}-rpms"
+        path: |
+          tmp/RPMS/*/*.rpm
+          tmp/SRPMS/*.rpm
