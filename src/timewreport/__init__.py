@@ -1,1 +1,3 @@
-__version__ = "1.4.0"
+"""
+A Timewarrior extension interface for custom reports.
+"""

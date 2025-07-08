@@ -1,0 +1,91 @@
+name: Debian packages
+
+on:
+  workflow_dispatch:
+  #push:
+    #branches: [ main ]
+  pull_request:
+
+jobs:
+  get_version:
+    name: Get version info
+    runs-on: ubuntu-22.04
+    defaults:
+      run:
+        shell: bash
+    outputs:
+      version: ${{ steps.git_ver.outputs.version }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get package version
+        id: git_ver
+        run: |
+          version=$(git describe --tags | sed -e "s|-g|+g|" -e 's/^v//')
+          echo "Version from git: ${version}"
+          echo "version=${version}" >> $GITHUB_OUTPUT
+
+  build_debs:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-22.04
+    needs: [get_version]
+
+    strategy:
+      fail-fast: false
+      matrix:
+        name: [
+          x64_bookworm,
+          x64_trixie,
+          x64_sid,
+        ]
+
+        include:
+          - name: x64_bookworm
+            dist: bookworm
+
+          - name: x64_trixie
+            dist: trixie
+
+          - name: x64_sid
+            dist: sid
+
+    steps:
+      - name: Check github variables
+        env:
+          VERSION: ${{ needs.get_version.outputs.version }}
+        run: |
+          echo "Package version from git: ${VERSION}"
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Fetch debian files
+        run: |
+          wget https://launchpad.net/~nerdboy/+archive/ubuntu/embedded/+sourcefiles/timew-report/1.4.0-1ubuntu2.22.04.1/timew-report_1.4.0-1ubuntu2.22.04.1.debian.tar.xz
+          tar xf timew-report_1.4.0-1ubuntu2.22.04.1.debian.tar.xz && rm *debian.tar.xz
+          ls
+
+      - name: Install deps and update debian changelog
+        run: |
+          sudo apt-get update
+          sudo apt-get install devscripts
+          debchange -v ${{ needs.get_version.outputs.version }}-${{ matrix.dist }} -b -M --distribution ${{ matrix.dist }} "ci build"
+
+      - name: Build deb packages
+        uses: jtdor/build-deb-action@v1
+        env:
+          DEB_BUILD_OPTIONS: noautodbgsym
+        with:
+          docker-image: "debian:${{ matrix.dist }}-slim"
+          buildpackage-opts: --build=binary --no-sign
+          extra-build-deps: git
+
+      - name: Upload deb files
+        uses: actions/upload-artifact@v4
+        with:
+          name: "timew-addons_${{ needs.get_version.outputs.version }}-${{ matrix.dist }}"
+          path: ./debian/artifacts/*.deb

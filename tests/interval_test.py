@@ -1,8 +1,27 @@
-from datetime import datetime, timedelta
+import datetime
+
+import pytest
 
 from dateutil.tz import tz
 
 from timewreport.interval import TimeWarriorInterval
+
+UTC = datetime.UTC if hasattr(datetime, 'UTC') else datetime.timezone.utc
+
+
+def test_get_date_is_deprecated():
+    test_interval = TimeWarriorInterval(2, "20180816T090319Z", "20180816T100700Z", [], None)
+    with pytest.deprecated_call():
+        interval_start = test_interval.get_date()
+
+
+def test_get_date_warning_has_version():
+    test_interval = TimeWarriorInterval(2, "20180816T090319Z", "20180816T100700Z", [], None)
+    with pytest.warns(DeprecationWarning) as record:
+        start_date = test_interval.get_date()
+        warn_msg = record[0].message.args[0]
+    print(warn_msg)
+    assert "Deprecated since version 1.4.0" in warn_msg
 
 
 def test_interval_should_be_hashable():
@@ -13,10 +32,10 @@ def test_interval_should_be_hashable():
 
 
 def test_interval_should_be_creatable_from_utc_string():
-    test_start = datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
-    test_start_utc = test_start.utcnow()
-    test_end = test_start + timedelta(hours=1)
-    test_end_utc = test_start_utc + timedelta(hours=1)
+    test_start = datetime.datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
+    test_start_utc = test_start.now(UTC)
+    test_end = test_start + datetime.timedelta(hours=1)
+    test_end_utc = test_start_utc + datetime.timedelta(hours=1)
 
     interval = TimeWarriorInterval(
         1,
@@ -32,8 +51,8 @@ def test_interval_should_be_creatable_from_utc_string():
 
 
 def test_interval_should_be_creatable_from_local_string():
-    test_start = datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
-    test_end = test_start + timedelta(hours=1)
+    test_start = datetime.datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
+    test_end = test_start + datetime.timedelta(hours=1)
 
     interval = TimeWarriorInterval(
         1,
@@ -49,8 +68,8 @@ def test_interval_should_be_creatable_from_local_string():
 
 
 def test_interval_should_be_creatable_from_local_datetime():
-    test_start = datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
-    test_end = test_start + timedelta(hours=1)
+    test_start = datetime.datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
+    test_end = test_start + datetime.timedelta(hours=1)
 
     interval = TimeWarriorInterval(
         1,
@@ -66,10 +85,10 @@ def test_interval_should_be_creatable_from_local_datetime():
 
 
 def test_interval_should_be_creatable_from_utc_datetime():
-    test_start = datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
-    test_start_utc = test_start.utcnow().replace(microsecond=0)
-    test_end = test_start + timedelta(hours=1)
-    test_end_utc = test_start_utc + timedelta(hours=1)
+    test_start = datetime.datetime.now(tz=tz.tzlocal()).replace(microsecond=0)
+    test_start_utc = test_start.now(UTC).replace(microsecond=0)
+    test_end = test_start + datetime.timedelta(hours=1)
+    test_end_utc = test_start_utc + datetime.timedelta(hours=1)
 
     interval = TimeWarriorInterval(
         1,
