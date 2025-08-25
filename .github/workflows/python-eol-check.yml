@@ -1,0 +1,82 @@
+name: Python EOL Check
+
+on:
+  schedule:
+    - cron: '0 8 * * 1' # Every Monday at 08:00 UTC
+  workflow_dispatch:
+
+jobs:
+  check-python-eol:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for existing EOL warning issue
+        id: check_existing_issue
+        run: |
+          echo "should_skip=false" >> $GITHUB_OUTPUT
+          existing=$(curl -s -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/issues?state=open&labels=maintenance,python" \
+            | jq '.[] | select(.title=="Python version EOL warning")')
+          if [ -n "$existing" ]; then
+            echo "An open 'Python version EOL warning' issue already exists. Skipping remaining steps."
+            echo "should_skip=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Checkout repository
+        if: steps.check_existing_issue.outputs.should_skip != 'true'
+        uses: actions/checkout@v5
+
+      - name: Query Python EOL data
+        if: steps.check_existing_issue.outputs.should_skip != 'true'
+        id: eol
+        run: |
+          curl -s https://endoflife.date/api/python.json > python_eol.json
+
+      - name: Extract Python versions from pythonpackage.yml
+        if: steps.check_existing_issue.outputs.should_skip != 'true'
+        id: extract_versions
+        run: |
+          python <<EOF
+          import yaml
+          with open('.github/workflows/python-package.yml') as f:
+              data = yaml.safe_load(f)
+          versions = data['jobs']['build']['strategy']['matrix']['python-version']
+          with open('project_python_versions.txt', 'w') as f:
+              for v in versions:
+                  f.write(f"{v}\n")
+          print("Extracted Python versions from workflow:", versions)
+          EOF
+
+      - name: Find EOL dates for project Python versions
+        if: steps.check_existing_issue.outputs.should_skip != 'true'
+        id: find_eol
+        run: |
+          python <<EOF
+          import json, datetime
+          threshold_months = 3
+          today = datetime.date.today()
+          with open('python_eol.json') as f:
+            eol_data = json.load(f)
+          with open('project_python_versions.txt') as f:
+            versions = [line.strip() for line in f if line.strip()]
+          eol_soon = []
+          for v in versions:
+            for entry in eol_data:
+              if entry['cycle'].startswith(v):
+                eol_date = datetime.date.fromisoformat(entry['eol'])
+                months_left = (eol_date.year - today.year) * 12 + (eol_date.month - today.month)
+                if months_left <= threshold_months:
+                  eol_soon.append((v, entry['eol'], entry.get('latest', 'N/A')))
+          if eol_soon:
+            with open('eol_soon.txt', 'w') as f:
+              for v, d, latest in eol_soon:
+                f.write(f"Python {v} is nearing EOL on {d}. Latest available: {latest}\n")
+            print("EOL soon:", eol_soon)
+          EOF
+
+      - name: Create issue if EOL is near
+        if: steps.check_existing_issue.outputs.should_skip != 'true' && success() && (hashFiles('eol_soon.txt') != '')
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "Python version EOL warning"
+          content-filepath: eol_soon.txt
+          labels: maintenance, python
