@@ -75,7 +75,7 @@ jobs:
 
       - name: Create issue if EOL is near
         if: steps.check_existing_issue.outputs.should_skip != 'true' && success() && (hashFiles('eol_soon.txt') != '')
-        uses: peter-evans/create-issue-from-file@v5
+        uses: peter-evans/create-issue-from-file@v6
         with:
           title: "Python version EOL warning"
           content-filepath: eol_soon.txt
